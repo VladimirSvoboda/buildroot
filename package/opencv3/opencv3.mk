@@ -112,15 +112,19 @@ OPENCV3_CONF_OPTS += \
 
 # Hardware support options.
 #
-# * PowerPC and VFPv3 support are turned off since their only effects
+# * PowerPC are turned off since their only effects
 #   are altering CFLAGS, adding '-mcpu=G3 -mtune=G5' or '-mfpu=vfpv3'
 #   to them, which is already handled by Buildroot.
+OPENCV3_CONF_OPTS += \
+	-DENABLE_POWERPC=OFF
+
 # * NEON logic is needed as it is not only used to add CFLAGS, but
 #   also to enable additional NEON code.
+ifeq ($(BR2_arm)$(BR2_aarch64),yn)
 OPENCV3_CONF_OPTS += \
-	-DENABLE_POWERPC=OFF \
 	-DENABLE_NEON=$(if $(BR2_ARM_CPU_HAS_NEON),ON,OFF) \
 	-DENABLE_VFPV3=OFF
+endif
 
 # Cuda stuff
 OPENCV3_CONF_OPTS += \
